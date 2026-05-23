@@ -1,4 +1,4 @@
-# 🗣️ Tradutor de Grung (D&D 5e)
+# Tradutor de Grung (D&D 5e)
 
 Um idioma fictício criado para campanhas de **RPG Dungeons & Dragons 5ª edição**, baseado na **cifra de César (+7)**.  
 Este projeto permite codificar frases do **idioma comum** para o **idioma Grung** e decodificar de volta, com regras especiais de apóstrofo para dar mais sabor linguístico.
