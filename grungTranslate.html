@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Tradutor de Grung</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", cursivem sans-serif;
+      margin: 20px;
+      background-image: url('fundo.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: white;
+
+    }
+
+    input,
+    button {
+      margin: 5px;
+      padding: 8px;
+      font-family: "Comic Sans MS", cursivem sans-serif;
+    }
+
+    #resultado {
+      margin-top: 15px;
+      font-weight: bold;
+      color: white;
+      background-color: #FECA01;
+      padding: 10px;
+      border-radius: 8px;
+      display: inline-block;
+
+    }
+    h2, label, #resultado {
+      color: white;
+      text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Tradutor de Grung</h2>
+
+  <label>Idioma Comum:</label><br>
+  <input type="text" id="idiomaComum" placeholder="Digite frase comum"><br>
+
+  <label>Idioma Grung:</label><br>
+  <input type="text" id="idiomaGrung" placeholder="Digite frase Grung"><br>
+
+  <button onclick="traduzirParaGrung()">Codificar (Comum → Grung)</button>
+  <button onclick="traduzirParaComum()">Decodificar (Grung → Comum)</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    function cifraCesar(texto, deslocamento) {
+      return texto.replace(/[a-z]/gi, c => {
+        let base = c === c.toUpperCase() ? 65 : 97;
+        return String.fromCharCode(((c.charCodeAt(0) - base + deslocamento + 26) % 26) + base);
+      });
+    }
+
+    function aplicarApostrofo(texto) {
+      return texto.split(" ").map(palavra => {
+        let ultima = palavra[palavra.length - 1].toUpperCase();
+        if (ultima > "M") {
+          return palavra.slice(0, 3) + "'" + palavra.slice(3);
+        } else {
+          return palavra.slice(0, 2) + "'" + palavra.slice(2);
+        }
+      }).join(" ");
+    }
+
+    function removerApostrofo(texto) {
+      return texto.replace(/'/g, "");
+    }
+
+    function traduzirParaGrung() {
+      let texto = document.getElementById("idiomaComum").value;
+      let cifrado = cifraCesar(texto, 7);
+      let resultado = aplicarApostrofo(cifrado);
+      document.getElementById("resultado").innerText = "Idioma Grung: " + resultado;
+      document.getElementById("idiomaComum").value = "";
+    }
+
+    function traduzirParaComum() {
+      let texto = document.getElementById("idiomaGrung").value;
+      let semApostrofo = removerApostrofo(texto);
+      let decifrado = cifraCesar(semApostrofo, -7);
+      document.getElementById("resultado").innerText = "Idioma Comum: " + decifrado;
+      document.getElementById("idiomaGrung").value = "";
+    }
+  </script>
+</body>
+
+</html>
