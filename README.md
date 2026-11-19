@@ -6,6 +6,8 @@ Idioma fictício dos Grung para campanhas de **Dungeons & Dragons 5ª edição**
 - Digite em **Idioma Comum** e o Grung aparece na hora — ou cole texto em **Idioma Grung** para ler em português.
 - **Copiar** / **Limpar** para agilizar na mesa. A seção "Como funciona" mostra as regras e a tabela do alfabeto.
 
+- **Música de fundo** (`musica.mp3`) toca ao entrar na página e se repete. O botão 🔊/🔇 no canto superior direito silencia e reativa (a escolha fica salva no navegador). Navegadores bloqueiam som automático antes de qualquer interação; nesse caso a música começa no primeiro clique, toque ou tecla.
+
 ## Regras da língua
 1. Cada letra avança **7 posições** (A→H, B→I … Z→G).
 2. Com a palavra já cifrada, olha-se a **última letra**:
@@ -24,7 +26,12 @@ Exemplo: `sapo` → `zhw'v` · `casa` → `jh'zh`
 | `grung.js` | Lógica da língua (funciona no navegador e no Node) |
 | `test/grung.test.js` | Testes automatizados |
 | `fundo.jpeg` | Mascote do cabeçalho |
+| `musica.mp3` | Música de fundo |
 
+## Testes
+```
+node --test test/*.test.js
+```
 
 ## Licença
 Livre para uso em campanhas pessoais de RPG. Adapte à sua mesa!

@@ -107,3 +107,16 @@ textarea:focus-visible, button:focus-visible, summary:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+.mutar {
+  position: fixed; top: 14px; right: 14px; z-index: 10;
+  width: 46px; height: 46px;
+  font-size: 1.3rem;
+  color: var(--papel);
+  background: rgba(20, 38, 26, 0.9);
+  border: 2px solid var(--ouro);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.mutar:hover { background: var(--musgo); }
+.mutar:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }

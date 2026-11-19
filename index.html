@@ -11,6 +11,9 @@
 </head>
 
 <body>
+  <audio id="musica" src="musica.mp3" loop preload="auto"></audio>
+  <button type="button" id="mutar" class="mutar" aria-pressed="false" aria-label="Silenciar música" title="Silenciar música">🔊</button>
+
   <main class="card">
     <header class="topo">
       <img class="mascote" src="fundo.jpeg" alt="" width="68" height="82">
@@ -76,6 +79,7 @@
         if (msg) timer = setTimeout(() => (status.textContent = ""), 2000);
       }
 
+      // Tradução em tempo real, nos dois sentidos.
       comum.addEventListener("input", () => { grung.value = Grung.codificar(comum.value); });
       grung.addEventListener("input", () => { comum.value = Grung.decodificar(grung.value); });
 
@@ -97,6 +101,47 @@
           aviso("Copiado!");
         });
       });
+
+      // Música de fundo: tenta tocar ao entrar; se o navegador bloquear,
+      // começa na primeira interação. O botão 🔊/🔇 silencia e reativa.
+      const musica = document.getElementById("musica");
+      const btnMutar = document.getElementById("mutar");
+      let mudo = false;
+      try { mudo = localStorage.getItem("grung-mudo") === "1"; } catch (_) {}
+      musica.volume = 0.5;
+
+      function atualizarBotao() {
+        btnMutar.textContent = mudo ? "🔇" : "🔊";
+        btnMutar.setAttribute("aria-pressed", String(mudo));
+        const t = mudo ? "Ativar música" : "Silenciar música";
+        btnMutar.setAttribute("aria-label", t);
+        btnMutar.title = t;
+      }
+
+      function tocar() {
+        if (mudo) return Promise.resolve();
+        return musica.play();
+      }
+
+      function esperarInteracao() {
+        const eventos = ["pointerdown", "keydown", "touchstart"];
+        const iniciar = () => {
+          eventos.forEach((e) => document.removeEventListener(e, iniciar, true));
+          tocar().catch(() => {});
+        };
+        eventos.forEach((e) => document.addEventListener(e, iniciar, true));
+      }
+
+      btnMutar.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        mudo = !mudo;
+        try { localStorage.setItem("grung-mudo", mudo ? "1" : "0"); } catch (_) {}
+        if (mudo) musica.pause(); else tocar().catch(() => {});
+        atualizarBotao();
+      });
+
+      atualizarBotao();
+      if (!mudo) tocar().catch(esperarInteracao);
 
       // Tabela do alfabeto
       const tabela = document.getElementById("tabela");
