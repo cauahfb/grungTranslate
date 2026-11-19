@@ -1,32 +1,30 @@
 # Tradutor de Grung (D&D 5e)
 
-Um idioma fictício criado para campanhas de **RPG Dungeons & Dragons 5ª edição**, baseado na **cifra de César (+7)**.  
-Este projeto permite codificar frases do **idioma comum** para o **idioma Grung** e decodificar de volta, com regras especiais de apóstrofo para dar mais sabor linguístico.
+Idioma fictício dos Grung para campanhas de **Dungeons & Dragons 5ª edição**, baseado na **cifra de César (+7)** com regras de apóstrofo. Abra o `index.html` no navegador, sem instalar nada.
 
----
+## Como usar
+- Digite em **Idioma Comum** e o Grung aparece na hora — ou cole texto em **Idioma Grung** para ler em português.
+- **Copiar** / **Limpar** para agilizar na mesa. A seção "Como funciona" mostra as regras e a tabela do alfabeto.
 
-## Funcionalidades
-- **Codificação (Comum → Grung):**
-  - Aplica cifra de César com deslocamento **+7**.
-  - Se a palavra terminar com letra **após "M"**, insere apóstrofo após 3 letras.
-  - Se terminar com **"M" ou antes**, insere apóstrofo após 2 letras.
-- **Decodificação (Grung → Comum):**
-  - Remove apóstrofos automaticamente.
-  - Aplica cifra de César com deslocamento **-7** para retornar ao idioma comum.
+## Regras da língua
+1. Cada letra avança **7 posições** (A→H, B→I … Z→G).
+2. Com a palavra já cifrada, olha-se a **última letra**:
+   - **N–Z** → apóstrofo após a **3ª** letra
+   - **A–M** → apóstrofo após a **2ª** letra
+3. Se a palavra for curta demais para receber o apóstrofo, ele não é inserido.
+4. Acentos são removidos antes de cifrar (á→a, ç→c); números e pontuação não mudam.
 
----
+Exemplo: `sapo` → `zhw'v` · `casa` → `jh'zh`
 
-## Tecnologias
-- **HTML5**
-- **CSS3** (Comic Sans, fundo customizável, caixinha laranja para resultado)
-- **JavaScript** (implementação da cifra de César + regras de apóstrofo)
+## Estrutura
+| Arquivo | Função |
+|---|---|
+| `index.html` | Interface |
+| `style.css` | Visual (responsivo, tema pântano) |
+| `grung.js` | Lógica da língua (funciona no navegador e no Node) |
+| `test/grung.test.js` | Testes automatizados |
+| `fundo.jpeg` | Mascote do cabeçalho |
 
----
-## Objetivo
-Este idioma foi criado para enriquecer campanhas de **D&D 5e**, oferecendo uma forma divertida de comunicação secreta entre personagens, NPCs ou até puzzles dentro da narrativa.
-
----
 
 ## Licença
-Este projeto é livre para uso em campanhas pessoais de RPG.  
-Sinta-se à vontade para modificar e adaptar às suas mesas!
+Livre para uso em campanhas pessoais de RPG. Adapte à sua mesa!

@@ -3,96 +3,109 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Tradutor de Grung</title>
-  <style>
-    body {
-      font-family: "Comic Sans MS", cursivem sans-serif;
-      margin: 20px;
-      background-image: url('fundo.jpeg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      color: white;
-
-    }
-
-    input,
-    button {
-      margin: 5px;
-      padding: 8px;
-      font-family: "Comic Sans MS", cursivem sans-serif;
-    }
-
-    #resultado {
-      margin-top: 15px;
-      font-weight: bold;
-      color: white;
-      background-color: #FECA01;
-      padding: 10px;
-      border-radius: 8px;
-      display: inline-block;
-
-    }
-    h2, label, #resultado {
-      color: white;
-      text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tradutor do idioma Grung para campanhas de D&D 5e: cifra de César +7 com apóstrofos.">
+  <meta name="theme-color" content="#1f3a1f">
+  <title>Tradutor de Grung · D&amp;D 5e</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h2>Tradutor de Grung</h2>
+  <main class="card">
+    <header class="topo">
+      <img class="mascote" src="fundo.jpeg" alt="" width="68" height="82">
+      <div>
+        <h1>Tradutor de Grung</h1>
+        <p class="sub">Idioma secreto dos sapos de D&amp;D 5e</p>
+      </div>
+    </header>
 
-  <label>Idioma Comum:</label><br>
-  <input type="text" id="idiomaComum" placeholder="Digite frase comum"><br>
+    <section class="campo" aria-labelledby="l-comum">
+      <div class="campo-topo">
+        <label for="comum" id="l-comum">Idioma Comum</label>
+        <div class="acoes">
+          <button type="button" class="mini" data-copiar="comum">Copiar</button>
+          <button type="button" class="mini" data-limpar>Limpar</button>
+        </div>
+      </div>
+      <textarea id="comum" rows="4" placeholder="Digite em português…" spellcheck="false" autocomplete="off"></textarea>
+    </section>
 
-  <label>Idioma Grung:</label><br>
-  <input type="text" id="idiomaGrung" placeholder="Digite frase Grung"><br>
+    <div class="seta" aria-hidden="true">⇅</div>
 
-  <button onclick="traduzirParaGrung()">Codificar (Comum → Grung)</button>
-  <button onclick="traduzirParaComum()">Decodificar (Grung → Comum)</button>
+    <section class="campo grung" aria-labelledby="l-grung">
+      <div class="campo-topo">
+        <label for="grung" id="l-grung">Idioma Grung</label>
+        <div class="acoes">
+          <button type="button" class="mini" data-copiar="grung">Copiar</button>
+        </div>
+      </div>
+      <textarea id="grung" rows="4" placeholder="…ou cole o texto em Grung" spellcheck="false" autocomplete="off"></textarea>
+    </section>
 
-  <div id="resultado"></div>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
 
+    <details class="regras">
+      <summary>Como funciona o Grung</summary>
+      <ol>
+        <li>Cada letra avança <strong>7 posições</strong> no alfabeto (A→H, B→I… Z→G).</li>
+        <li>Depois de cifrada, olha-se a <strong>última letra</strong> da palavra:
+          <ul>
+            <li>de <strong>N a Z</strong>: apóstrofo após a <strong>3ª</strong> letra;</li>
+            <li>de <strong>A a M</strong>: apóstrofo após a <strong>2ª</strong> letra.</li>
+          </ul>
+        </li>
+        <li>Palavras curtas demais para receber o apóstrofo ficam sem ele.</li>
+        <li>Acentos são removidos (á→a, ç→c); números e pontuação não mudam.</li>
+      </ol>
+      <div id="tabela" class="tabela" aria-label="Tabela do alfabeto"></div>
+    </details>
+  </main>
+
+  <script src="grung.js"></script>
   <script>
-    function cifraCesar(texto, deslocamento) {
-      return texto.replace(/[a-z]/gi, c => {
-        let base = c === c.toUpperCase() ? 65 : 97;
-        return String.fromCharCode(((c.charCodeAt(0) - base + deslocamento + 26) % 26) + base);
+    (function () {
+      const comum = document.getElementById("comum");
+      const grung = document.getElementById("grung");
+      const status = document.getElementById("status");
+      let timer;
+
+      function aviso(msg) {
+        status.textContent = msg;
+        clearTimeout(timer);
+        if (msg) timer = setTimeout(() => (status.textContent = ""), 2000);
+      }
+
+      comum.addEventListener("input", () => { grung.value = Grung.codificar(comum.value); });
+      grung.addEventListener("input", () => { comum.value = Grung.decodificar(grung.value); });
+
+      document.querySelector("[data-limpar]").addEventListener("click", () => {
+        comum.value = grung.value = "";
+        comum.focus();
       });
-    }
 
-    function aplicarApostrofo(texto) {
-      return texto.split(" ").map(palavra => {
-        let ultima = palavra[palavra.length - 1].toUpperCase();
-        if (ultima > "M") {
-          return palavra.slice(0, 3) + "'" + palavra.slice(3);
-        } else {
-          return palavra.slice(0, 2) + "'" + palavra.slice(2);
-        }
-      }).join(" ");
-    }
+      document.querySelectorAll("[data-copiar]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const campo = document.getElementById(btn.dataset.copiar);
+          if (!campo.value) return aviso("Nada para copiar.");
+          try {
+            await navigator.clipboard.writeText(campo.value);
+          } catch (_) {
+            campo.select();
+            document.execCommand("copy");
+          }
+          aviso("Copiado!");
+        });
+      });
 
-    function removerApostrofo(texto) {
-      return texto.replace(/'/g, "");
-    }
-
-    function traduzirParaGrung() {
-      let texto = document.getElementById("idiomaComum").value;
-      let cifrado = cifraCesar(texto, 7);
-      let resultado = aplicarApostrofo(cifrado);
-      document.getElementById("resultado").innerText = "Idioma Grung: " + resultado;
-      document.getElementById("idiomaComum").value = "";
-    }
-
-    function traduzirParaComum() {
-      let texto = document.getElementById("idiomaGrung").value;
-      let semApostrofo = removerApostrofo(texto);
-      let decifrado = cifraCesar(semApostrofo, -7);
-      document.getElementById("resultado").innerText = "Idioma Comum: " + decifrado;
-      document.getElementById("idiomaGrung").value = "";
-    }
+      // Tabela do alfabeto
+      const tabela = document.getElementById("tabela");
+      Grung.alfabeto().forEach(([c, g]) => {
+        const el = document.createElement("span");
+        el.innerHTML = c + "<b>" + g + "</b>";
+        tabela.appendChild(el);
+      });
+    })();
   </script>
 </body>
 
