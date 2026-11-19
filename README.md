@@ -1,5 +1,8 @@
 # Tradutor de Grung (D&D 5e)
 
+Parte do Projeto CampanhaRPG
+[![Website](https://img.shields.io/badge/Website-campanharpg.com.br-67247f?style=for-the-badge)](https://campanharpg.com.br)
+
 Idioma fictício dos Grung para campanhas de **Dungeons & Dragons 5ª edição**, baseado na **cifra de César (+7)** com regras de apóstrofo. Abra o `index.html` no navegador, sem instalar nada.
 
 ## Como usar
@@ -30,9 +33,3 @@ Exemplo: `sapo` → `zhw'v` · `casa` → `jh'zh`
 
 ## Licença
 Livre para uso em campanhas pessoais de RPG. Adapte à sua mesa!
-
-
-## Identidade visual e compartilhamento
-- Os favicons e ícones de dispositivo usam o emblema oficial do portal Campanha RPG.
-- `og-grung.jpg` é a imagem 1200×630 usada na prévia de compartilhamento (Open Graph/Twitter Cards).
-- As tags Open Graph e Twitter estão no `index.html`. Para a prévia aparecer corretamente em WhatsApp e outros aplicativos, publique os arquivos no mesmo diretório e configure `og:image` e `twitter:image` com a URL absoluta pública do domínio onde o tradutor estiver hospedado, caso o crawler não resolva caminhos relativos.
