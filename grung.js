@@ -1,16 +1,3 @@
-/*
- * Tradutor de Grung — lógica da língua (sem dependência de DOM).
- * Funciona no navegador (window.Grung) e no Node (module.exports), para poder ser testada.
- *
- * Regras:
- *  1. Cifra de César com deslocamento +7 (A→H, B→I, ... Z→G).
- *  2. Apóstrofo por palavra, decidido pela ÚLTIMA LETRA da palavra já cifrada:
- *       - depois de "M" (N–Z): apóstrofo após a 3ª letra
- *       - "M" ou antes (A–M):   apóstrofo após a 2ª letra
- *     Se a palavra não tem letras suficientes depois da posição, não há apóstrofo.
- *  3. Acentos são removidos antes de cifrar (á→a, ç→c), pois a cifra só cobre A–Z.
- *  4. Números, pontuação e espaços passam intactos.
- */
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
   else root.Grung = factory();

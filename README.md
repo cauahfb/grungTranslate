@@ -28,10 +28,5 @@ Exemplo: `sapo` → `zhw'v` · `casa` → `jh'zh`
 | `fundo.jpeg` | Mascote do cabeçalho |
 | `musica.mp3` | Música de fundo |
 
-## Testes
-```
-node --test test/*.test.js
-```
-
 ## Licença
 Livre para uso em campanhas pessoais de RPG. Adapte à sua mesa!
